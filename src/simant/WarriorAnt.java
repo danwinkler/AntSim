@@ -5,7 +5,7 @@ public class WarriorAnt extends Ant
 	public WarriorAnt()
 	{
 		super();
-		health = AntWorld.world.options.getI( "warriorHealth" );
+		health = A.o.getI( "warriorHealth" );
 	}
 	
 	public void update()

@@ -6,7 +6,7 @@ public class Egg extends Ant
 	
 	public Egg()
 	{
-		timeLeft = AntWorld.world.options.getI( "eggTimeLeft" );
+		timeLeft = A.o.getI( "eggTimeLeft" );
 	}
 	
 	public void update()

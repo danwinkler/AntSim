@@ -15,7 +15,7 @@ public class AntWorld
 	Tile[][] tiles;
 	ArrayList<Team> teams;
 	
-	DOptions options = new DOptions( "antworld.cfg" );
+	ArrayList<Food> food;
 	
 	public void update()
 	{
@@ -24,8 +24,8 @@ public class AntWorld
 	
 	private AntWorld()
 	{
-		width = options.getI( "surfaceWidth" );
-		height = options.getI( "surfaceHeight" );
+		width = A.o.getI( "surfaceWidth" );
+		height = A.o.getI( "surfaceHeight" );
 		tiles = new Tile[width][height];
 	}
 	
@@ -38,11 +38,6 @@ public class AntWorld
 	public static void setWorld( AntWorld w )
 	{
 		world = w;
-	}
-	
-	public void loadOptions( String filename )
-	{
-		options = new DOptions( filename );
 	}
 	
 	public boolean getClear( int x, int y )

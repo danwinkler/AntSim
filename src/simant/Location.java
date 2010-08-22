@@ -14,11 +14,9 @@ public class Location extends Point2f
 	boolean underground;
 	Nest nest;
 	
+	static 
 	{
-		if( equalsDist <= 0 )
-		{
-			equalsDist = AntWorld.world.options.getF( "locationEqualsDist" );
-		}
+			equalsDist = A.o.getF( "locationEqualsDist" );
 	}
 	
 	public Location()

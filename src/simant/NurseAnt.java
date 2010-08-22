@@ -8,7 +8,7 @@ public class NurseAnt extends Ant
 	public NurseAnt()
 	{
 		super();
-		health = AntWorld.world.options.getI( "nurseHealth" );
+		health = A.o.getI( "nurseHealth" );
 	}
 	
 	public void update()

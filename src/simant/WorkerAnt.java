@@ -9,7 +9,7 @@ public class WorkerAnt extends Ant
 	public WorkerAnt()
 	{
 		super();
-		health = AntWorld.world.options.getI( "workerHealth" );
+		health = A.o.getI( "workerHealth" );
 	}
 	
 	public void update()
