@@ -12,7 +12,7 @@ public class AntWorldLocalGame implements AntWorldModifier
 		ui = new AntWorldUI( this );
 	}
 	
-	public void begin() 
+	public void begin()
 	{
 		ui.begin();
 	}
@@ -22,12 +22,12 @@ public class AntWorldLocalGame implements AntWorldModifier
 		AntWorldLocalGame lg = new AntWorldLocalGame();
 		lg.begin();
 	}
-
-	public void moveAnt( Ant ant, int region, int x, int y ) 
+	
+	public void moveAnt( Ant ant, int region, int x, int y )
 	{
 		
 	}
-
+	
 	public void setAntAuto( Ant ant, boolean auto )
 	{
 		

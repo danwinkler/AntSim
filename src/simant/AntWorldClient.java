@@ -1,5 +1,6 @@
 package simant;
 
-public class AntWorldClient {
-
+public class AntWorldClient
+{
+	
 }

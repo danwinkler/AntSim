@@ -2,7 +2,7 @@ package simant;
 
 import javax.vecmath.Point2f;
 
-public class Food 
+public class Food
 {
 	public static int MAX_FOOD = 4;
 	Point2f loc;

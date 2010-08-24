@@ -16,7 +16,7 @@ public abstract class Ant
 	
 	public Ant()
 	{
-		speed =A.o.getF( "antSpeed" );
+		speed = A.o.getF( "antSpeed" );
 	}
 	
 	public void update()

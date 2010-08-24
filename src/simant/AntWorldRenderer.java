@@ -16,10 +16,10 @@ public class AntWorldRenderer
 		if( loc.underground )
 		{
 			Nest nest = loc.nest;
-			int minTileX = (int) Math.max( minX / nest.xTileSize, 0 );
-			int minTileY = (int) Math.max( minY / nest.xTileSize, 0 );
-			int maxTileX = (int) Math.min( maxX / nest.xTileSize, nest.width-1 );
-			int maxTileY = (int) Math.min( maxY / nest.xTileSize, nest.height-1 );
+			int minTileX = (int) Math.max( minX / Nest.xTileSize, 0 );
+			int minTileY = (int) Math.max( minY / Nest.yTileSize, 0 );
+			int maxTileX = (int) Math.min( maxX / Nest.xTileSize, nest.width-1 );
+			int maxTileY = (int) Math.min( maxY / Nest.yTileSize, nest.height-1 );
 			
 			for( int x = minTileX; x < maxTileX; x++ )
 			{
@@ -34,7 +34,7 @@ public class AntWorldRenderer
 					{
 						r.color( DGraphics.rgb( 200, 100, 40 ) );
 					}
-					r.fillRect( x*nest.xTileSize, y*nest.yTileSize, nest.xTileSize, nest.yTileSize );
+					r.fillRect( x*Nest.xTileSize, y*Nest.yTileSize, Nest.xTileSize, Nest.yTileSize );
 				}
 			}
 		}
