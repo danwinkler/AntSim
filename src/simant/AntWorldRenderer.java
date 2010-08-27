@@ -38,6 +38,31 @@ public class AntWorldRenderer
 				}
 			}
 		}
+		else
+		{
+			int minTileX = (int) Math.max( minX / w.xTileSize, 0 );
+			int minTileY = (int) Math.max( minY / w.yTileSize, 0 );
+			int maxTileX = (int) Math.min( maxX / w.xTileSize, w.width-1 );
+			int maxTileY = (int) Math.min( maxY / w.yTileSize, w.height-1 );
+			
+			for( int x = minTileX; x < maxTileX; x++ )
+			{
+				for( int y = minTileY; y < maxTileY; y++ )
+				{
+					//TODO: Texture stuff
+					int type = w.tiles[x][y].type;
+					if( type == 0 )
+					{
+						r.color( DGraphics.rgb( 150, 60, 20 ) );
+					}
+					else
+					{
+						r.color( DGraphics.rgb( 200, 100, 40 ) );
+					}
+					r.fillRect( x*w.xTileSize, y*w.yTileSize, w.xTileSize, w.yTileSize );
+				}
+			}
+		}
 	}
 	
 }

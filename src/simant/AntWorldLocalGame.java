@@ -9,7 +9,7 @@ public class AntWorldLocalGame implements AntWorldModifier
 	public AntWorldLocalGame()
 	{
 		world = AntWorld.createWorld();
-		ui = new AntWorldUI( this );
+		ui = new AntWorldUI( this, world );
 	}
 	
 	public void begin()
