@@ -8,6 +8,7 @@ public class AntWorldRenderer
 	//Render the antworld using the passed Renderer and viewport, centered around the loc
 	public static void render( Renderer r, Location loc, int width, int height )
 	{
+		//Render ground
 		AntWorld w = AntWorld.world;
 		float minX = loc.x - width/2;
 		float minY = loc.y - height/2;
@@ -63,6 +64,9 @@ public class AntWorldRenderer
 				}
 			}
 		}
+		
+		//Render ants
+		
 	}
 	
 }
