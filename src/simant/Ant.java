@@ -17,6 +17,7 @@ public abstract class Ant
 	public Ant()
 	{
 		speed = A.o.getF( "antSpeed" );
+		loc = new Location();
 	}
 	
 	public void update()

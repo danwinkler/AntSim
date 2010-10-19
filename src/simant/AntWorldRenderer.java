@@ -1,6 +1,9 @@
 package simant;
 
+import java.io.IOException;
+
 import com.phyloa.dlib.renderer.Renderer;
+import com.phyloa.dlib.util.DFile;
 import com.phyloa.dlib.util.DGraphics;
 
 public class AntWorldRenderer 
@@ -8,12 +11,19 @@ public class AntWorldRenderer
 	//Render the antworld using the passed Renderer and viewport, centered around the loc
 	public static void render( Renderer r, Location loc, int width, int height )
 	{
+		r.color( 0, 0, 0 );
+		r.fillRect( 0, 0, width, height );
+		
+		r.pushMatrix();
+		
 		//Render ground
 		AntWorld w = AntWorld.world;
 		float minX = loc.x - width/2;
 		float minY = loc.y - height/2;
 		float maxX = loc.x + width/2;
-		float maxY = loc.y - height/2;
+		float maxY = loc.y + height/2;
+		
+		r.translate( -loc.x + width/2, -loc.y + height/2 );
 		if( loc.underground )
 		{
 			Nest nest = loc.nest;
@@ -52,21 +62,43 @@ public class AntWorldRenderer
 				{
 					//TODO: Texture stuff
 					int type = w.tiles[x][y].type;
-					if( type == 0 )
+					switch( type )
 					{
-						r.color( DGraphics.rgb( 150, 60, 20 ) );
+					case 0: r.drawImage( AntImage.get( 0 ), x*w.xTileSize, y*w.yTileSize ); break;
+					case 1: r.drawImage( AntImage.get( 1 ), x*w.xTileSize, y*w.yTileSize ); break;
+					case 2: r.drawImage( AntImage.get( 2 ), x*w.xTileSize, y*w.yTileSize ); break;
 					}
-					else
-					{
-						r.color( DGraphics.rgb( 200, 100, 40 ) );
-					}
-					r.fillRect( x*w.xTileSize, y*w.yTileSize, w.xTileSize, w.yTileSize );
 				}
 			}
 		}
 		
-		//Render ants
+		//Render food
+		r.color( 0, 255, 0 );
+		for( int i = 0; i < w.food.size(); i++ )
+		{
+			Food f = w.food.get( i );
+			switch( f.amt )
+			{
+			case 4: r.fillOval( f.loc.x, f.loc.y, 5, 5 );
+			case 3: r.fillOval( f.loc.x - 5, f.loc.y, 5, 5 );
+			case 2: r.fillOval( f.loc.x, f.loc.y - 5, 5, 5 );
+			case 1: r.fillOval( f.loc.x - 5, f.loc.y - 5, 5, 5 );
+			}
+		}
 		
+		//Render ants
+		r.color( 0, 0, 0 );
+		for( int i = 0; i < w.teams.size(); i++ )
+		{
+			Team t = w.teams.get( i );
+			for( int j = 0; j < t.units.size(); j++ )
+			{
+				Ant a = t.units.get( j );
+				r.fillOval( a.loc.x-5, a.loc.y-5, 10, 10 );
+			}
+		}
+		
+		r.popMatrix();
 	}
 	
 }

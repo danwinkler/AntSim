@@ -7,6 +7,22 @@ public class Tile
 	
 	Nest nest;
 	
+	public Tile()
+	{
+		
+	}
+	
+	public Tile( int type )
+	{
+		this.type = type;
+	}
+	
+	public Tile( Nest nest )
+	{
+		this.type = 2;
+		this.nest = nest;
+	}
+	
 	public boolean getClear()
 	{
 		return walkable;

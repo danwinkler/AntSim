@@ -22,6 +22,7 @@ public class Location extends Point2f
 	public Location()
 	{
 		super();
+		underground = false;
 	}
 	
 	public Location( Point2f loc )

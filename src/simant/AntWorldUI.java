@@ -18,6 +18,8 @@ public class AntWorldUI extends Graphics2DRenderer implements DUIListener
 	
 	Location cameraLoc = new Location();
 	
+	boolean localGame = false;
+	
 	public AntWorldUI( AntWorldModifier mod, AntWorld world )
 	{
 		this.mod = mod;
@@ -34,19 +36,47 @@ public class AntWorldUI extends Graphics2DRenderer implements DUIListener
 		
 		menu = new DButton( "Menu", 0, 0, 100, 30 );
 		dui.add( menu );
+		
+		cameraLoc.x = (world.width * world.xTileSize) / 2;
+		cameraLoc.y = (world.height * world.yTileSize) / 2;
+		
+		for( int i = 0; i < world.nests.size(); i++ )
+		{
+			dui.add( new DButton( "Nest " + (i+1), 100 + 100*i, 0, 100, 30 ) );
+		}
 	}
 
 	public void update() 
 	{
 		dui.update();
 		
-		if( world != null )
+		if( world != null && localGame )
 		{
 			world.update();
 		}
 		
 		AntWorldRenderer.render( this, cameraLoc, getWidth(), getHeight() );
 		dui.render( this );
+		
+		if( !dui.isHover() )
+		{
+			if( m.x < 60 && cameraLoc.x > 0 )
+			{
+				cameraLoc.x -= 2;
+			}
+			if( m.x > canvas.getWidth() - 60 && cameraLoc.x < world.width * world.xTileSize  )
+			{
+				cameraLoc.x += 2;
+			}
+			if( m.y < 60 && cameraLoc.y > 0 )
+			{
+				cameraLoc.y -= 2;
+			}
+			if( m.y > canvas.getHeight() - 60 && cameraLoc.y < world.height * world.yTileSize )
+			{
+				cameraLoc.y += 2;
+			}
+		}
 	}
 
 	public void event( DUIEvent e )

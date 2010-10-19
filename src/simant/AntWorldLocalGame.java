@@ -8,8 +8,15 @@ public class AntWorldLocalGame implements AntWorldModifier
 	
 	public AntWorldLocalGame()
 	{
-		world = AntWorld.createWorld();
+		world = AntWorld.createWorld( 2 );
+		
+		Team team1 = new Team( 0 );
+		world.teams.add( team1 );
+		
+		team1.units.add( new WorkerAnt() );
+		
 		ui = new AntWorldUI( this, world );
+		ui.localGame = true;
 	}
 	
 	public void begin()
