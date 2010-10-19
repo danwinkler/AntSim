@@ -39,9 +39,13 @@ public class AntWorld
 				float xx = x + dx;
 				float yy = y + dy;
 				int foodQuant = (int)(Food.MAX_FOOD - ((mag / foodRad) * (Food.MAX_FOOD - 1)));
-				if( xx > 0 && xx < width * xTileSize && yy > 0 && yy < height * yTileSize )
+				if( xx > 0 && xx < width * (xTileSize-1) && yy > yTileSize && yy < height * (yTileSize-1) )
 				{
-					food.add( new Food( x + dx, y + dy, foodQuant ) );
+					Tile t = tiles[(int)(xx/xTileSize)][(int)(yy/yTileSize)];
+					if( t.type == 0 )
+					{
+						food.add( new Food( x + dx, y + dy, foodQuant ) );
+					}
 				}
 			}
 		}

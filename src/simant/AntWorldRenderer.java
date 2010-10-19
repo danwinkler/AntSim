@@ -1,6 +1,7 @@
 package simant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.phyloa.dlib.renderer.Renderer;
 import com.phyloa.dlib.util.DFile;
@@ -37,15 +38,13 @@ public class AntWorldRenderer
 				for( int y = minTileY; y < maxTileY; y++ )
 				{
 					//TODO: Texture stuff
-					if( nest.tiles[x][y] == 0)
+					int type = nest.tiles[x][y];
+					switch( type )
 					{
-						r.color( DGraphics.rgb( 150, 60, 20 ) );
+					case 0: r.drawImage( AntImage.getUnderground( 0 ), x*Nest.xTileSize, y*Nest.yTileSize ); break;
+					case 1: r.drawImage( AntImage.getUnderground( 1 ), x*Nest.xTileSize, y*Nest.yTileSize ); break;
+					case 2: r.drawImage( AntImage.getUnderground( 2 ), x*Nest.xTileSize, y*Nest.yTileSize ); break;
 					}
-					else
-					{
-						r.color( DGraphics.rgb( 200, 100, 40 ) );
-					}
-					r.fillRect( x*Nest.xTileSize, y*Nest.yTileSize, Nest.xTileSize, Nest.yTileSize );
 				}
 			}
 		}
@@ -64,9 +63,9 @@ public class AntWorldRenderer
 					int type = w.tiles[x][y].type;
 					switch( type )
 					{
-					case 0: r.drawImage( AntImage.get( 0 ), x*w.xTileSize, y*w.yTileSize ); break;
-					case 1: r.drawImage( AntImage.get( 1 ), x*w.xTileSize, y*w.yTileSize ); break;
-					case 2: r.drawImage( AntImage.get( 2 ), x*w.xTileSize, y*w.yTileSize ); break;
+					case 0: r.drawImage( AntImage.getTerrain( 0 ), x*w.xTileSize, y*w.yTileSize ); break;
+					case 1: r.drawImage( AntImage.getTerrain( 1 ), x*w.xTileSize, y*w.yTileSize ); break;
+					case 2: r.drawImage( AntImage.getTerrain( 2 ), x*w.xTileSize, y*w.yTileSize ); break;
 					}
 				}
 			}
@@ -77,12 +76,18 @@ public class AntWorldRenderer
 		for( int i = 0; i < w.food.size(); i++ )
 		{
 			Food f = w.food.get( i );
-			switch( f.amt )
+			if( f.loc.underground == loc.underground )
 			{
-			case 4: r.fillOval( f.loc.x, f.loc.y, 5, 5 );
-			case 3: r.fillOval( f.loc.x - 5, f.loc.y, 5, 5 );
-			case 2: r.fillOval( f.loc.x, f.loc.y - 5, 5, 5 );
-			case 1: r.fillOval( f.loc.x - 5, f.loc.y - 5, 5, 5 );
+				if( f.loc.nest == loc.nest )
+				{
+					switch( f.amt )
+					{
+					case 4: r.fillOval( f.loc.x, f.loc.y, 5, 5 );
+					case 3: r.fillOval( f.loc.x - 5, f.loc.y, 5, 5 );
+					case 2: r.fillOval( f.loc.x, f.loc.y - 5, 5, 5 );
+					case 1: r.fillOval( f.loc.x - 5, f.loc.y - 5, 5, 5 );
+					}
+				}
 			}
 		}
 		

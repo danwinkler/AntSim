@@ -2,6 +2,7 @@ package simant;
 
 import com.phyloa.dlib.dui.DButton;
 import com.phyloa.dlib.dui.DUI;
+import com.phyloa.dlib.dui.DUIElement;
 import com.phyloa.dlib.dui.DUIEvent;
 import com.phyloa.dlib.dui.DUIListener;
 import com.phyloa.dlib.renderer.Graphics2DRenderer;
@@ -40,9 +41,11 @@ public class AntWorldUI extends Graphics2DRenderer implements DUIListener
 		cameraLoc.x = (world.width * world.xTileSize) / 2;
 		cameraLoc.y = (world.height * world.yTileSize) / 2;
 		
+		dui.add( new DButton( "Surface", 100, 0, 100, 30 ) );
+		
 		for( int i = 0; i < world.nests.size(); i++ )
 		{
-			dui.add( new DButton( "Nest " + (i+1), 100 + 100*i, 0, 100, 30 ) );
+			dui.add( new DButton( "Nest " + (i+1), 200 + 100*i, 0, 100, 30 ) );
 		}
 	}
 
@@ -58,29 +61,54 @@ public class AntWorldUI extends Graphics2DRenderer implements DUIListener
 		AntWorldRenderer.render( this, cameraLoc, getWidth(), getHeight() );
 		dui.render( this );
 		
+		//Scroll
 		if( !dui.isHover() )
 		{
-			if( m.x < 60 && cameraLoc.x > 0 )
+			if( m.x < 60 && cameraLoc.x > 0 && m.inside )
 			{
 				cameraLoc.x -= 2;
 			}
-			if( m.x > canvas.getWidth() - 60 && cameraLoc.x < world.width * world.xTileSize  )
+			if( m.x > canvas.getWidth() - 60 && cameraLoc.x < world.width * world.xTileSize && m.inside )
 			{
 				cameraLoc.x += 2;
 			}
-			if( m.y < 60 && cameraLoc.y > 0 )
+			if( m.y < 60 && cameraLoc.y > 0 && m.inside )
 			{
 				cameraLoc.y -= 2;
 			}
-			if( m.y > canvas.getHeight() - 60 && cameraLoc.y < world.height * world.yTileSize )
+			if( m.y > canvas.getHeight() - 60 && cameraLoc.y < world.height * world.yTileSize && m.inside )
 			{
 				cameraLoc.y += 2;
 			}
 		}
+		
+		//Click on units or holes
 	}
 
 	public void event( DUIEvent e )
 	{
-		
+		DUIElement element = e.getElement();
+		if( element instanceof DButton )
+		{
+			DButton b = (DButton)element;
+			if( b.getText().startsWith( "Nest" ) )
+			{
+				String[] parts = b.getText().split( " " );
+				String num = parts[1].trim();
+				int nestId = Integer.parseInt( num );
+				Nest n = world.nests.get( nestId - 1 );
+				cameraLoc.x = n.width * Nest.xTileSize * .5f;
+				cameraLoc.y = n.height * Nest.yTileSize * .5f;
+				cameraLoc.underground = true;
+				cameraLoc.nest = n;
+			}
+			else if( b.getText().equals( "Surface" ) )
+			{
+				cameraLoc.x = world.width * world.xTileSize * .5f;
+				cameraLoc.y = world.height * world.yTileSize * .5f;
+				cameraLoc.underground = false;
+				cameraLoc.nest = null;
+			}
+		}
 	}
 }

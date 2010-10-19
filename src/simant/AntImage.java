@@ -8,20 +8,34 @@ import com.phyloa.dlib.util.DGraphics;
 
 public class AntImage
 {
-	public static BufferedImage[] images;
+	public static BufferedImage[] terrainImages;
+	public static BufferedImage[] unitImages;
+	public static BufferedImage[] undergroundImages;
 	
 	static
 	{
 		try
 		{
-			images = DGraphics.cut( DFile.loadImage( "terrain.png" ), 20, 20 );
+			terrainImages = DGraphics.cut( DFile.loadImage( "terrain.png" ), (int)A.o.getF( "surfaceXTileSize" ), (int)A.o.getF( "surfaceYTileSize" ) );
+			undergroundImages = DGraphics.cut( DFile.loadImage( "underground.png" ), 12, 12 );
+			unitImages = DGraphics.cut( DFile.loadImage( "units.png" ), 12, 12 );
 		} catch( IOException e )
 		{
 		}
 	}
 	
-	public static BufferedImage get( int i )
+	public static BufferedImage getTerrain( int i )
 	{
-		return images[i];
+		return terrainImages[i];
+	}
+	
+	public static BufferedImage getUnderground( int i )
+	{
+		return undergroundImages[i];
+	}
+	
+	public static BufferedImage getUnits( int i )
+	{
+		return unitImages[i];
 	}
 }
