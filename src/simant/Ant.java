@@ -48,6 +48,11 @@ public abstract class Ant
 						if( !loc.equals( point ) )
 						{
 							moveTowards( point );
+							float dist = loc.distanceSquared( point );
+							if( dist < speed * speed )
+							{
+								loc.set( point );
+							}
 						}
 						else
 						{
@@ -84,7 +89,14 @@ public abstract class Ant
 			}
 			else
 			{
-				undergroundPathAdd( loc.nest.hole );
+				if( loc.equals( loc.nest.hole ) )
+				{
+					loc = new Location( loc.nest.surfaceLoc );
+				}
+				else
+				{
+					undergroundPathAdd( loc.nest.hole );
+				}
 			}
 		}
 		else

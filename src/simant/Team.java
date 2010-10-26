@@ -7,6 +7,7 @@ public class Team
 	int color;
 	ArrayList<Ant> units = new ArrayList<Ant>();
 	int side = 0; //0 left, 1 right
+	Nest n;
 	
 	public Team()
 	{

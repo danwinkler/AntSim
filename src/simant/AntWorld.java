@@ -54,6 +54,15 @@ public class AntWorld
 		{
 			teams.get( i ).update( this );
 		}
+		
+		for( int i = 0; i < food.size(); i++ )
+		{
+			if( food.get( i ).amt <= 0 )
+			{
+				food.remove( food );
+				i--;
+			}
+		}
 	}
 	
 	private AntWorld( int teamCount )
@@ -82,6 +91,7 @@ public class AntWorld
 			teams.add( new Team( i, side ) );
 			Nest n = new Nest();
 			nests.add( n );
+			teams.get( i ).n = n;
 			
 			while( true )
 			{

@@ -10,11 +10,12 @@ public class AntWorldLocalGame implements AntWorldModifier
 	{
 		world = AntWorld.createWorld( 2 );
 		
-		Team team1 = new Team( 0 );
-		world.teams.add( team1 );
+		Team team1 = world.teams.get( 0 );
 		
-		team1.units.add( new WorkerAnt( team1 ) );
-		team1.units.get( 0 ).targetLocation = new Location( 186, 20, world.nests.get( 0 ) );
+		for( int i = 0; i < 1; i++ )
+		{
+			team1.units.add( new WorkerAnt( team1 ) );
+		}
 		
 		ui = new AntWorldUI( this, world );
 		ui.localGame = true;

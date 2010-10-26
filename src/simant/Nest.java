@@ -25,10 +25,10 @@ public class Nest
 		width = A.o.getI( "nestWidth" );
 		height = A.o.getI( "nestHeight" );
 		tiles = new int[width][height];
-		hole = new Location( (int)(width/2), 0, this );
+		hole = new Location( (width/2) * xTileSize, 0, this );
 		for( int i = 0; i < 6; i++ )
 		{
-			tiles[(int)hole.x][i] = 1;
+			tiles[(int)(width/2)][i] = 1;
 		}
 		for( int i = 0; i < width; i++ )
 		{

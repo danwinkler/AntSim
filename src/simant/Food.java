@@ -21,6 +21,12 @@ public class Food
 		this( x, y, DMath.randomi( 1, MAX_FOOD ) );
 	}
 
+	public Food( Location loc2 )
+	{
+		loc = new Location( loc2 );
+		this.amt = 1;
+	}
+
 	public boolean addFood( int amt )
 	{
 		if( amt >= 4 )
