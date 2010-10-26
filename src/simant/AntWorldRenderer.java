@@ -33,9 +33,9 @@ public class AntWorldRenderer
 			int maxTileX = (int) Math.min( maxX / Nest.xTileSize, nest.width-1 );
 			int maxTileY = (int) Math.min( maxY / Nest.yTileSize, nest.height-1 );
 			
-			for( int x = minTileX; x < maxTileX; x++ )
+			for( int x = minTileX; x <= maxTileX; x++ )
 			{
-				for( int y = minTileY; y < maxTileY; y++ )
+				for( int y = minTileY; y <= maxTileY; y++ )
 				{
 					//TODO: Texture stuff
 					int type = nest.tiles[x][y];
@@ -55,11 +55,10 @@ public class AntWorldRenderer
 			int maxTileX = (int) Math.min( maxX / w.xTileSize, w.width-1 );
 			int maxTileY = (int) Math.min( maxY / w.yTileSize, w.height-1 );
 			
-			for( int x = minTileX; x < maxTileX; x++ )
+			for( int x = minTileX; x <= maxTileX; x++ )
 			{
-				for( int y = minTileY; y < maxTileY; y++ )
+				for( int y = minTileY; y <= maxTileY; y++ )
 				{
-					//TODO: Texture stuff
 					int type = w.tiles[x][y].type;
 					switch( type )
 					{
@@ -99,7 +98,13 @@ public class AntWorldRenderer
 			for( int j = 0; j < t.units.size(); j++ )
 			{
 				Ant a = t.units.get( j );
-				r.fillOval( a.loc.x-5, a.loc.y-5, 10, 10 );
+				if( a.loc.underground == loc.underground )
+				{
+					if( a.loc.nest == loc.nest )
+					{
+						r.fillOval( a.loc.x-5, a.loc.y-5, 10, 10 );
+					}
+				}
 			}
 		}
 		

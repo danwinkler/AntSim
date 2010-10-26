@@ -25,9 +25,15 @@ public class Location extends Point2f
 		underground = false;
 	}
 	
-	public Location( Point2f loc )
+	public Location( Location loc )
 	{
-		super( loc );
+		if( loc != null )
+		{
+			this.x = loc.x;
+			this.y = loc.y;
+			this.underground = loc.underground;
+			this.nest = loc.nest;
+		}
 	}
 	
 	public Location( float x, float y )
@@ -44,7 +50,7 @@ public class Location extends Point2f
 	
 	public Location( Point2f loc, Nest nest )
 	{
-		this( loc.x, loc.y );
+		this( loc.x, loc.y, nest );
 	}
 	
 	public boolean equals( Location location )
@@ -57,5 +63,13 @@ public class Location extends Point2f
 		{
 			return this.distance( location ) < equalsDist;
 		}
+	}
+	
+	public void set( Location loc )
+	{
+		this.x = loc.x;
+		this.y = loc.y;
+		this.underground = loc.underground;
+		this.nest = loc.nest;
 	}
 }

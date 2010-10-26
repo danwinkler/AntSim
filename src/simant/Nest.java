@@ -18,6 +18,8 @@ public class Nest
 	
 	Location hole;
 	
+	Location surfaceLoc;
+	
 	public Nest()
 	{
 		width = A.o.getI( "nestWidth" );

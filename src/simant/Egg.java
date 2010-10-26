@@ -2,15 +2,27 @@ package simant;
 
 public class Egg extends Ant
 {
+	public static int hatchTime;
+	
+	static
+	{
+		hatchTime = A.o.getI( "hatchTime" );
+	}
+	
 	int timeLeft;
 	
-	public Egg()
+	public Egg( Team t )
 	{
-		timeLeft = A.o.getI( "eggTimeLeft" );
+		super( t );
+		timeLeft = hatchTime;
 	}
 	
 	public void update()
 	{
-		
+		timeLeft--;
+		if( timeLeft <= 0 )
+		{
+			this.alive = false;
+		}
 	}
 }

@@ -1,13 +1,10 @@
 package simant;
 
 public class NurseAnt extends Ant
-{
-	
-	boolean onAuto = true;
-	
-	public NurseAnt()
+{	
+	public NurseAnt( Team t )
 	{
-		super();
+		super( t );
 		health = A.o.getI( "nurseHealth" );
 	}
 	

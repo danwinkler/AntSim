@@ -4,11 +4,9 @@ public class WorkerAnt extends Ant
 {
 	boolean hasFood;
 	
-	boolean onAuto = true;
-	
-	public WorkerAnt()
+	public WorkerAnt( Team t )
 	{
-		super();
+		super( t );
 		health = A.o.getI( "workerHealth" );
 	}
 	
@@ -18,6 +16,8 @@ public class WorkerAnt extends Ant
 		{
 			findFood();
 		}
+		
+		super.update();
 	}
 	
 	public void findFood()

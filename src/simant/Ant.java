@@ -11,172 +11,140 @@ public abstract class Ant
 	float heading;
 	float speed;	
 	int health;
+	boolean alive = true;
 	
-	ArrayList<Location> path = new ArrayList<Location>();
+	boolean onAuto = true;
 	
-	public Ant()
+	ArrayList<Location> path = null;
+	
+	Team t;
+	
+	public Ant( Team t )
 	{
 		speed = A.o.getF( "antSpeed" );
 		loc = new Location();
+		this.t = t;
 	}
 	
 	public void update()
 	{
 		if( targetLocation != null )
 		{
-			pathFind();
+			if( !loc.equals( targetLocation ) )
+			{
+				if( path == null )
+				{
+					pathFind();
+				}
+				else
+				{
+					if( path.size() == 0 )
+					{
+						pathFind();
+					}
+					else
+					{
+						Location point = path.get( 0 );
+						if( !loc.equals( point ) )
+						{
+							moveTowards( point );
+						}
+						else
+						{
+							path.remove( 0 );
+						}
+					}
+				}
+			}
 		}
-	}
-	
-	public void render()
-	{
-		
 	}
 	
 	public void pathFind()
 	{
-		if( !(loc.underground || targetLocation.underground) )
+		path = new ArrayList<Location>();
+		if( loc.underground )
 		{
-			//Both above ground
-			
-		}
-		else if( loc.underground && !targetLocation.underground )
-		{
-			//NEED TO GET ABOVE GROUND
-			nestPathFind( loc.nest.hole );
-		}
-		else if( !loc.underground && targetLocation.underground )
-		{
-			//NEED TO GET UNDERGROUND
-		}
-		else
-		{
-			if( loc.nest == targetLocation.nest )
+			if( targetLocation.underground )
 			{
-				//NAVIGATE through nest
-				nestPathFind( targetLocation );
+				if( loc.nest == targetLocation.nest )
+				{
+					undergroundPathAdd( targetLocation );
+				}
+				else
+				{
+					if( loc.equals( loc.nest.hole ) )
+					{
+						loc = new Location( loc.nest.surfaceLoc );
+					}
+					else
+					{
+						undergroundPathAdd( loc.nest.hole );
+					}
+				}
 			}
 			else
 			{
-				//NEED TO GET ABOVE GROUND
-				nestPathFind( loc.nest.hole );
+				undergroundPathAdd( loc.nest.hole );
 			}
 		}
-		
-		if( !loc.equals( targetLocation ) && path != null )
+		else
 		{
-			if( path.size() > 0 )
+			if( targetLocation.underground )
 			{
-				Location next = path.get( path.size() - 1 );
-				heading = (float) Math.atan2( next.x - loc.x, next.y - loc.y );
-				
-				loc.x += Math.cos( heading ) * speed;
-				loc.y += Math.sin( heading ) * speed;
+				if( loc.equals( targetLocation.nest.surfaceLoc ) )
+				{
+					loc = new Location( targetLocation.nest.hole );
+				}
+				else
+				{
+					surfacePathAdd( targetLocation.nest.surfaceLoc );
+				}
+			}
+			else
+			{
+				surfacePathAdd( targetLocation );
 			}
 		}
 	}
 	
-	//-----------------------------------------------------------------------------------
-	//BRUTE FORCE SEARCH ALGORITHM. COULD BE VASTLY IMPROVED
-	//-----------------------------------------------------------------------------------
-	
-	public void nestPathFind( Location loc )
+	private void undergroundPathAdd( Location targetLocation2 )
 	{
-		assert( loc.underground );
-		path = distanceUnderground( loc, 0, new ArrayList<Location>() );
+		//TODO: actually do pathfinding
+		if( targetLocation2 != null )
+		{
+			path.add( new Location( targetLocation2 ) );
+		}
+		else
+		{
+			System.err.println( "undergroundPathAdd was handed a null Location" );
+		}
 	}
 	
-	public ArrayList<Location> distanceUnderground( Location target, int currentDistance, ArrayList<Location> searched )
+	private void surfacePathAdd( Location targetLocation2 )
 	{
-		searched.add( target );
-		ArrayList<Location> minDist = null;
-		if( target.x < target.nest.width-1 )
+		//TODO: actually do pathfinding
+		if( targetLocation2 != null )
 		{
-			Location searchLoc = new Location( target.x+1, target.y, target.nest );
-			if( target.nest.getClear( target.x+1, target.y ) && !searched.contains( searchLoc ) )
-			{
-				ArrayList<Location> list = distanceUnderground( searchLoc, currentDistance + 1, searched );
-				if( minDist != null )
-				{
-					if( minDist.size() > list.size() )
-					{
-						minDist = list;
-					}
-				}
-				else
-				{
-					minDist = list;
-				}
-			}
+			path.add( new Location( targetLocation2 ) );
 		}
-		if( target.y < target.nest.height-1 )
+		else
 		{
-			Location searchLoc = new Location( target.x, target.y+1, target.nest );
-			if( target.nest.getClear( target.x, target.y+1 ) && !searched.contains( searchLoc ) )
-			{
-				ArrayList<Location> list = distanceUnderground( searchLoc, currentDistance + 1, searched );
-				if( minDist != null )
-				{
-					if( minDist.size() > list.size() )
-					{
-						minDist = list;
-					}
-				}
-				else
-				{
-					minDist = list;
-				}
-			}
+			System.err.println( "surfacePathAdd was handed a null Location" );
 		}
-		if( target.x > 0 )
-		{
-			Location searchLoc = new Location( target.x-1, target.y, target.nest );
-			if( target.nest.getClear( target.x-1, target.y ) && !searched.contains( searchLoc ) )
-			{
-				ArrayList<Location> list = distanceUnderground( searchLoc, currentDistance + 1, searched );
-				if( minDist != null )
-				{
-					if( minDist.size() > list.size() )
-					{
-						minDist = list;
-					}
-				}
-				else
-				{
-					minDist = list;
-				}
-			}
-		}
-		if( target.y >0 )
-		{
-			Location searchLoc = new Location( target.x, target.y-1, target.nest );
-			if( target.nest.getClear( target.x, target.y-1 ) && !searched.contains( searchLoc ) )
-			{
-				ArrayList<Location> list = distanceUnderground( searchLoc, currentDistance + 1, searched );
-				if( minDist != null )
-				{
-					if( minDist.size() > list.size() )
-					{
-						minDist = list;
-					}
-				}
-				else
-				{
-					minDist = list;
-				}
-			}
-		}
-		
-		if( minDist != null )
-		{
-			minDist.add( target );
-		}
-		
-		return minDist;
 	}
-	
-	public void surfacePathFind( Location loc )
+
+	public void moveTowards( Location next )
 	{
-		assert( !loc.underground );
+		if( next != null )
+		{
+			heading = (float) Math.atan2( next.y - loc.y, next.x - loc.x );
+	
+			loc.x += Math.cos( heading ) * speed;
+			loc.y += Math.sin( heading ) * speed;
+		}
+		else
+		{
+			System.err.println( "moveTowards was handed a null Location" );
+		}
 	}
 }

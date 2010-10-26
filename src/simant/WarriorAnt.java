@@ -2,9 +2,9 @@ package simant;
 
 public class WarriorAnt extends Ant
 {
-	public WarriorAnt()
+	public WarriorAnt( Team t )
 	{
-		super();
+		super( t );
 		health = A.o.getI( "warriorHealth" );
 	}
 	

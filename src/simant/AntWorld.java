@@ -49,6 +49,11 @@ public class AntWorld
 				}
 			}
 		}
+		
+		for( int i = 0; i < teams.size(); i++ )
+		{
+			teams.get( i ).update( this );
+		}
 	}
 	
 	private AntWorld( int teamCount )
@@ -76,7 +81,7 @@ public class AntWorld
 			int side =  i < (teamCount/2) ? 0 : 1;
 			teams.add( new Team( i, side ) );
 			Nest n = new Nest();
-			nests.add( new Nest() );
+			nests.add( n );
 			
 			while( true )
 			{
@@ -86,6 +91,7 @@ public class AntWorld
 				if( t.type != 2 )
 				{
 					tiles[xx][yy] = new Tile( n );
+					n.surfaceLoc = new Location( (xx*xTileSize) + xTileSize/2, (yy*yTileSize) + yTileSize/2 );
 					break;
 				}
 			}

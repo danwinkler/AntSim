@@ -24,4 +24,12 @@ public class Team
 		this( color );
 		this.side = side;
 	}
+
+	public void update( AntWorld antWorld )
+	{
+		for( int i = 0; i < units.size(); i++ )
+		{
+			units.get( i ).update();
+		}
+	}
 }
