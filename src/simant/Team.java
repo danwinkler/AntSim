@@ -31,6 +31,11 @@ public class Team
 		for( int i = 0; i < units.size(); i++ )
 		{
 			units.get( i ).update();
+			if( !units.get( i ).alive )
+			{
+				units.remove( i );
+				i--;
+			}
 		}
 	}
 }

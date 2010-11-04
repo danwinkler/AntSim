@@ -4,6 +4,15 @@ import java.util.ArrayList;
 
 public abstract class Ant 
 {
+	public static int hungerMax;
+	public static float fightDistance;
+	
+	static
+	{
+		hungerMax = A.o.getI( "antHungerTime" );
+		fightDistance = A.o.getF( "fightDistance" );
+	}
+	
 	Location loc;
 	
 	Location targetLocation;
@@ -11,6 +20,7 @@ public abstract class Ant
 	float heading;
 	float speed;	
 	int health;
+	int hunger;
 	boolean alive = true;
 	
 	boolean onAuto = true;
@@ -19,48 +29,97 @@ public abstract class Ant
 	
 	Team t;
 	
+	SuperState ss = SuperState.IDLE;
+	
 	public Ant( Team t )
 	{
 		speed = A.o.getF( "antSpeed" );
+		hunger = hungerMax;
 		loc = new Location();
 		this.t = t;
 	}
 	
 	public void update()
 	{
-		if( targetLocation != null )
+		if( health > 0 && hunger > 0 )
 		{
-			if( !loc.equals( targetLocation ) )
+			if( ss == SuperState.IDLE )
 			{
-				if( path == null )
+				if( targetLocation != null )
 				{
-					pathFind();
-				}
-				else
-				{
-					if( path.size() == 0 )
+					if( !loc.equals( targetLocation ) )
 					{
-						pathFind();
-					}
-					else
-					{
-						Location point = path.get( 0 );
-						if( !loc.equals( point ) )
+						if( path == null )
 						{
-							moveTowards( point );
-							float dist = loc.distanceSquared( point );
-							if( dist < speed * speed )
-							{
-								loc.set( point );
-							}
+							pathFind();
 						}
 						else
 						{
-							path.remove( 0 );
+							if( path.size() == 0 )
+							{
+								pathFind();
+							}
+							else
+							{
+								Location point = path.get( 0 );
+								if( !loc.equals( point ) )
+								{
+									moveTowards( point );
+									float dist = loc.distanceSquared( point );
+									if( dist < speed * speed )
+									{
+										loc.set( point );
+									}
+								}
+								else
+								{
+									path.remove( 0 );
+								}
+							}
 						}
 					}
 				}
 			}
+			
+			//FIGHT!
+			AntWorld w = AntWorld.world;
+			ss = SuperState.IDLE;
+			stopFighting:
+			for( int i = 0; i < w.teams.size(); i++ )
+			{
+				Team team = w.teams.get( i );
+				if( team != this.t )
+				{
+					for( int j = 0; j < team.units.size(); j++ )
+					{
+						Ant a = team.units.get( j );
+						if( a.loc.underground == this.loc.underground )
+						{
+							if( a.loc.nest == this.loc.nest || !this.loc.underground )
+							{
+								float distance = a.loc.distance( this.loc );
+								if( distance < fightDistance )
+								{
+									fight( a );
+									break stopFighting;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		hunger--;
+		if( hunger <= 0 )
+		{
+			alive = false;
+			AntWorld.world.renderEvents.add( new RenderEvent( RenderEventType.ANT_STARVE, t, loc ) );
+		}
+		else if( health <= 0 )
+		{
+			alive = false;
+			AntWorld.world.renderEvents.add( new RenderEvent( RenderEventType.ANT_DIE, t, loc ) );
 		}
 	}
 	
@@ -158,5 +217,27 @@ public abstract class Ant
 		{
 			System.err.println( "moveTowards was handed a null Location" );
 		}
+	}
+	
+	public void eatFood( Food f )
+	{
+		hunger = hungerMax;
+		health = getMaxHealth();
+		f.amt--;
+	}
+	
+	public void fight( Ant a )
+	{
+		a.health--;
+		this.health--;
+		ss = SuperState.FIGHTING;
+	}
+	
+	public abstract int getMaxHealth();
+	
+	enum SuperState
+	{
+		IDLE,
+		FIGHTING
 	}
 }

@@ -10,20 +10,8 @@ public class AntWorldLocalGame implements AntWorldModifier
 	{
 		world = AntWorld.createWorld( 2 );
 		
-		Team team1 = world.teams.get( 0 );
-		
-		for( int i = 0; i < 1; i++ )
-		{
-			team1.units.add( new WorkerAnt( team1 ) );
-		}
-		
 		ui = new AntWorldUI( this, world );
 		ui.localGame = true;
-		
-		for( int i = 0; i < world.nests.size(); i++ )
-		{
-			assert( world.nests.get( i ).surfaceLoc != null );
-		}
 	}
 	
 	public void begin()

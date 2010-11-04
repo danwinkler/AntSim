@@ -2,29 +2,44 @@ package simant;
 
 public class Queen extends Ant
 {
-	public Queen( Team t )
-	{
-		super( t );
-	}
-
 	public static int EGG_TIME;
+	public static int maxQueenHealth;
 	
 	static
 	{
-		A.o.getI( "eggTime" );
+		EGG_TIME = A.o.getI( "eggTime" );
+		maxQueenHealth = A.o.getI( "queenHealth" );
+	}
+	public Queen( Team t )
+	{
+		super( t );
+		health = maxQueenHealth;
+	}
+
+	public Queen( Team team, Location location )
+	{
+		this( team );
+		this.loc = new Location( location );
 	}
 	
-	int eggTimer = 0;
+	int eggTimer = EGG_TIME;
 	
 	public void update()
 	{
 		if( eggTimer <= 0 )
 		{
-			t.units.add( new Egg( t ) );
+			t.units.add( new Egg( t, loc ) );
+			eggTimer = EGG_TIME;
 		}
 		
 		eggTimer--;
 		
 		super.update();
+	}
+
+	@Override
+	public int getMaxHealth()
+	{
+		return maxQueenHealth;
 	}
 }

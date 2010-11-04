@@ -22,9 +22,20 @@ public class AntWorld
 	
 	ArrayList<Food> food;
 	
+	ArrayList<RenderEvent> renderEvents = new ArrayList<RenderEvent>();
+	
 	public void update()
 	{
-		if( food.size() < 10 )
+		int surfaceFood = 0;
+		for( int i = 0; i < food.size(); i++ )
+		{
+			if( !food.get( i ).loc.underground )
+			{
+				surfaceFood++;
+			}
+		}
+		
+		if( surfaceFood < 10 )
 		{
 			float x = DMath.randomf( 0, width * xTileSize );
 			float y = DMath.randomf( 0, height * yTileSize );
@@ -44,7 +55,7 @@ public class AntWorld
 					Tile t = tiles[(int)(xx/xTileSize)][(int)(yy/yTileSize)];
 					if( t.type == 0 )
 					{
-						food.add( new Food( x + dx, y + dy, foodQuant ) );
+						food.add( new Food( x + dx, y + dy, Math.min( foodQuant, Food.MAX_FOOD ) ) );
 					}
 				}
 			}
@@ -59,7 +70,7 @@ public class AntWorld
 		{
 			if( food.get( i ).amt <= 0 )
 			{
-				food.remove( food );
+				food.remove( i );
 				i--;
 			}
 		}
@@ -92,6 +103,7 @@ public class AntWorld
 			Nest n = new Nest();
 			nests.add( n );
 			teams.get( i ).n = n;
+			teams.get( i ).units.add( new Queen( teams.get( i ), new Location( ((n.width/2)*Nest.xTileSize) + Nest.xTileSize/2, 50, n ) ) );
 			
 			while( true )
 			{

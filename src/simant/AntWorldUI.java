@@ -1,5 +1,7 @@
 package simant;
 
+import java.awt.RenderingHints;
+
 import com.phyloa.dlib.dui.DButton;
 import com.phyloa.dlib.dui.DUI;
 import com.phyloa.dlib.dui.DUIElement;
@@ -51,6 +53,9 @@ public class AntWorldUI extends Graphics2DRenderer implements DUIListener
 
 	public void update() 
 	{
+		g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ); 
+		g.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		
 		dui.update();
 		
 		if( world != null && localGame )
