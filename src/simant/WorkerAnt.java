@@ -79,6 +79,11 @@ public class WorkerAnt extends Ant
 				}
 				break;
 			case RETURNING_WITH_FOOD:
+				if( hunger < hungerMax/2 )
+				{
+					state = State.IDLE;
+					hasFood = false;
+				}
 				if( loc.equals( targetLocation ) )
 				{
 					AntWorld.world.food.add( new Food( loc ) );

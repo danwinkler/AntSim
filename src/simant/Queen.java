@@ -5,11 +5,14 @@ public class Queen extends Ant
 	public static int EGG_TIME;
 	public static int maxQueenHealth;
 	
+	State state = State.LAYING_EGGS;
+	
 	static
 	{
 		EGG_TIME = A.o.getI( "eggTime" );
 		maxQueenHealth = A.o.getI( "queenHealth" );
 	}
+	
 	public Queen( Team t )
 	{
 		super( t );
@@ -34,6 +37,50 @@ public class Queen extends Ant
 		
 		eggTimer--;
 		
+		switch( state )
+		{
+		case LAYING_EGGS:
+			if( hunger < hungerMax/2 )
+			{
+				state = State.GETTING_FOOD;
+				findFood();
+			}
+			else
+			{
+				//Walk around
+			}
+			break;
+		case GETTING_FOOD:
+			if( hunger > hungerMax/2 )
+			{
+				state = State.LAYING_EGGS;
+			}
+			else
+			{
+				if( targetLocation != null )
+				{
+					if( targetLocation.equals( this.loc ) )
+					{
+						findFood();
+					}
+				}
+				else
+				{
+					findFood();
+				}
+				
+				for( int i = 0; i < AntWorld.world.food.size(); i++ )
+				{
+					Food f = AntWorld.world.food.get( i );
+					if( f.loc.equals( f.loc ) )
+					{
+						eatFood( f );
+					}
+				}
+			}
+			break;
+		}
+		
 		super.update();
 	}
 
@@ -41,5 +88,24 @@ public class Queen extends Ant
 	public int getMaxHealth()
 	{
 		return maxQueenHealth;
+	}
+	
+	enum State
+	{
+		LAYING_EGGS,
+		GETTING_FOOD
+	}
+	
+	public void findFood()
+	{
+		for( int i = 0; i < AntWorld.world.food.size(); i++ )
+		{
+			Food f = AntWorld.world.food.get( i );
+			if( f.loc.nest == this.loc.nest )
+			{
+				targetLocation = new Location( f.loc );
+				break;
+			}
+		}
 	}
 }

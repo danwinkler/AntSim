@@ -49,7 +49,7 @@ public class AntWorld
 				float dy = DMath.sinf( a ) * mag;
 				float xx = x + dx;
 				float yy = y + dy;
-				int foodQuant = (int)(Food.MAX_FOOD - ((mag / foodRad) * (Food.MAX_FOOD - 1)));
+				int foodQuant = 1;
 				if( xx > 0 && xx < width * (xTileSize-1) && yy > yTileSize && yy < height * (yTileSize-1) )
 				{
 					Tile t = tiles[(int)(xx/xTileSize)][(int)(yy/yTileSize)];
